@@ -9,16 +9,16 @@
 // @grant        none
 // ==/UserScript==
 
-(function() {
-    'use strict';
+(function () {
+    "use strict";
 
     // Configuration
     const CONFIG = {
-        SPEED_MULTIPLIER: 16,        // Maximum speed when holding key
-        REWIND_SECONDS: 5,           // Seconds to rewind
-        QUICK_PRESS_THRESHOLD: 200,  // Milliseconds to consider a quick press
-        RESET_DELAY: 500,           // Milliseconds to wait before resetting after quick press
-        DEBUG: false                 // Enable/disable console logging
+        SPEED_MULTIPLIER: 16, // Maximum speed when holding key
+        REWIND_SECONDS: 5, // Seconds to rewind
+        QUICK_PRESS_THRESHOLD: 200, // Milliseconds to consider a quick press
+        RESET_DELAY: 500, // Milliseconds to wait before resetting after quick press
+        DEBUG: false, // Enable/disable console logging
     };
 
     // State management
@@ -27,18 +27,33 @@
         timeRelease: 0,
         currentVideo: null,
         speedUpTimeout: null,
-        isSpeedingUp: false
+        isSpeedingUp: false,
+        lastPlayedVideo: null, // Add this line to track the last played video
     };
 
     // Utility functions
     const logger = {
-        log: (...args) => CONFIG.DEBUG && console.log('[Video Control]:', ...args),
-        error: (...args) => CONFIG.DEBUG && console.error('[Video Control]:', ...args)
+        log: (...args) => CONFIG.DEBUG && console.log("[Video Control]:", ...args),
+        error: (...args) => CONFIG.DEBUG && console.error("[Video Control]:", ...args),
     };
 
     function findPlayingVideo() {
-        const videos = Array.from(document.getElementsByTagName('video'));
-        return videos.find(video => !video.paused && !video.ended);
+        const videos = Array.from(document.getElementsByTagName("video"));
+        return videos.find((video) => !video.paused && !video.ended);
+    }
+
+    function getLatestPlayingVideo() {
+        setInterval(() => {
+            const playingVideo = findPlayingVideo();
+            if (playingVideo) {
+                state.lastPlayedVideo = playingVideo;
+            }
+        }, 1000);
+    }
+
+    function getPlayingOrLastPlayedVideo() {
+        const playingVideo = findPlayingVideo();
+        return playingVideo || state.lastPlayedVideo;
     }
 
     function handleSpeedChange(video, speed) {
@@ -47,7 +62,7 @@
             video.loop = false;
             logger.log(`Playback rate set to: ${speed}x`);
         } catch (error) {
-            logger.error('Error changing playback speed:', error);
+            logger.error("Error changing playback speed:", error);
         }
     }
 
@@ -55,9 +70,9 @@
     function speedUpVideo() {
         if (state.isSpeedingUp) return;
 
-        const video = findPlayingVideo();
+        const video = getPlayingOrLastPlayedVideo();
         if (!video) {
-            logger.log('No playing video found');
+            logger.log("No playing video found");
             return;
         }
 
@@ -82,14 +97,14 @@
     }
 
     function rewindVideo() {
-        const video = findPlayingVideo();
+        const video = getPlayingOrLastPlayedVideo();
         if (!video) return;
 
         try {
             video.currentTime = Math.max(0, video.currentTime - CONFIG.REWIND_SECONDS);
             logger.log(`Rewound video by ${CONFIG.REWIND_SECONDS} seconds`);
         } catch (error) {
-            logger.error('Error rewinding video:', error);
+            logger.error("Error rewinding video:", error);
         }
     }
 
@@ -98,8 +113,8 @@
         if (event.repeat) return; // Prevent multiple triggers when key is held
 
         switch (event.code) {
-            case 'ArrowRight':
-            case 'Period':
+            case "ArrowRight":
+            case "Period":
                 state.timePress = Date.now();
                 if (state.currentVideo?.paused) {
                     resetPlaybackRate();
@@ -108,8 +123,8 @@
                 }
                 break;
 
-            case 'ArrowLeft':
-            case 'Comma':
+            case "ArrowLeft":
+            case "Comma":
                 rewindVideo();
                 break;
         }
@@ -117,16 +132,13 @@
 
     function handleKeyUp(event) {
         switch (event.code) {
-            case 'ArrowRight':
-            case 'Period':
+            case "ArrowRight":
+            case "Period":
                 state.timeRelease = Date.now();
                 const holdDuration = state.timeRelease - state.timePress;
 
                 if (holdDuration < CONFIG.QUICK_PRESS_THRESHOLD) {
-                    state.speedUpTimeout = setTimeout(
-                        resetPlaybackRate,
-                        CONFIG.RESET_DELAY - holdDuration
-                    );
+                    state.speedUpTimeout = setTimeout(resetPlaybackRate, CONFIG.RESET_DELAY - holdDuration);
                 } else {
                     resetPlaybackRate();
                 }
@@ -136,15 +148,16 @@
 
     // Initialize
     function initialize() {
-        document.addEventListener('keydown', handleKeyDown);
-        document.addEventListener('keyup', handleKeyUp);
-        logger.log('Video Control script initialized');
+        document.addEventListener("keydown", handleKeyDown);
+        document.addEventListener("keyup", handleKeyUp);
+        getLatestPlayingVideo();
+        logger.log("Video Control script initialized");
     }
 
     // Cleanup
     function cleanup() {
-        document.removeEventListener('keydown', handleKeyDown);
-        document.removeEventListener('keyup', handleKeyUp);
+        document.removeEventListener("keydown", handleKeyDown);
+        document.removeEventListener("keyup", handleKeyUp);
         resetPlaybackRate();
     }
 
@@ -152,6 +165,5 @@
     initialize();
 
     // Cleanup on page unload
-    window.addEventListener('unload', cleanup);
-
+    window.addEventListener("unload", cleanup);
 })();
