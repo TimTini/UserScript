@@ -15,7 +15,7 @@
         try {
             document
                 .querySelectorAll(
-                    "#main-container > div > section > div:nth-child(4) > div > div:nth-child(1) > div> div > div > div.flex.flex-col.gap-y-4 > div:nth-child(1) > div > div.flex.w-full.items-center"
+                    "div.flex.w-full.items-center"
                 )
                 .forEach((e) => {
                     if (e.querySelectorAll("svg").length === 3) {
