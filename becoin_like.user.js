@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Beincom Auto-Clicker Like Button
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Automates a task on group.beincom.com by simulating clicks on elements with three SVG icons
 // @author       You
 // @match        https://group.beincom.com/*
