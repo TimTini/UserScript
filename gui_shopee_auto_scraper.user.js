@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Shopee auto scraper
 // @namespace    http://tampermonkey.net/
-// @version      2025-02-16
+// @version      2025-02-16.01
 // @description  Xử lý danh sách URL Shopee, mở từng URL, thu thập dữ liệu và xuất kết quả dưới dạng danh sách.
 // @author       You
 // @match        https://example.com/start
@@ -18,13 +18,7 @@
         task: null,
         history: [],
     };
-    const testurls = [
-        "https://vn.xiapibuy.com/a-i.55771655.3581718517",
-        "https://vn.xiapibuy.com/a-i.55771655.3581718517",
-        "https://vn.xiapibuy.com/a-i.55771655.3581718517",
-        "https://vn.xiapibuy.com/a-i.55771655.3581718517",
-        "https://vn.xiapibuy.com/Kem-nhu%E1%BB%99m-d%C6%B0%E1%BB%A1ng-t%C3%B3c-s%C3%A2u-L'Oreal-Paris-Excellence-Fashion-172ml-v%E1%BB%9Bi-t%C3%B4ng-m%C3%A0u-th%E1%BB%9Di-trang-i.37251933.666258668?sp_atk=c044dba1-a3e7-4c85-bfb1-0101c8616076&xptdk=c044dba1-a3e7-4c85-bfb1-0101c8616076",
-    ];
+    const testurls = [];
     // Your code here...
     const Create_GUI = () => {
         // Replace the entire HTML content
@@ -146,7 +140,13 @@
                 temp_index++;
             });
         }
-
+        showProcess() {
+            if (this.index >= this.urls.length) {
+                document.querySelector("title").textContent = "Done";
+            } else {
+                document.querySelector("title").textContent = `${this.index + 1}/${this.urls.length}`;
+            }
+        }
         saveHistory(data) {
             const text = data.text;
             const url_tide = data.url;
@@ -180,6 +180,7 @@
         }
         process() {
             this.index += 1;
+            this.showProcess();
             if (this.index >= this.urls.length) {
                 console.log("All URLs have been processed");
                 this.processEle.disabled = false;
