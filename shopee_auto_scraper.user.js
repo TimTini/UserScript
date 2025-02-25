@@ -21,6 +21,8 @@
     const PRODUCT_SECTION_SELECTOR = "section.YTDXQ0";
     const PRICE_ELEMENT_SELECTOR = "div > div:nth-child(3) > div > section > div > div.IZPeQz.B67UQ0";
     const DISCOUNT_ELEMENT_SELECTOR = ".ZA5sW5";
+    // document.querySelector("#sll2-normal-pdp-main > div > div > div > div > div")
+    const PROCUCT_NOTFOUND_SELECTOR = "[role='main'] > .product-not-exist__content > .product-not-exist__text";
 
     // Class to handle URL query parameters
     class VRL {
@@ -102,9 +104,13 @@
     // Function to get the product price and discounts
     const GetPrice = () => {
         const product = document.querySelector(PRODUCT_SECTION_SELECTOR);
+        const is_notfound = document.querySelector(PROCUCT_NOTFOUND_SELECTOR);
+        const link = location.href;
+        if (is_notfound) {
+            return `${link}\tNA\tNA\tNon exist`;
+        }
         if (!product) return false;
         if (!product.getAttribute("data-event-set")) return false;
-        const link = location.href;
         const priceElement = product.querySelector(PRICE_ELEMENT_SELECTOR);
         if (!link || !priceElement) return false;
         const price = priceElement.textContent.trim().replace("₫", "");
