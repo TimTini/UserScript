@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Shopee Product Info Copier & Search Enhancer (In Product Page)
 // @namespace    http://tampermonkey.net/
-// @version      2025-02-25.01
+// @version      2025-02-25.02
 // @description  Enhances Shopee's search functionality by auto-submitting the search form on paste and allowing users to copy product links and prices with a click. Includes notifications upon successful copy and ensures efficient handling of dynamic elements.
 // @author       You
 // @match        https://vn.xiapibuy.com/*
@@ -14,20 +14,28 @@
 (function () {
     "use strict";
     console.log("Product Info Copier & Search Enhancer (In Product Page) loaded");
+
     const CHECK_INTERVAL = 1000;
     const NOTIFICATION_DURATION = 2000;
-    const notification = document.createElement("div");
-    notification.style.cssText = `
-    position: fixed; top: 20px; right: 20px; background-color: #FE5621;
-    color: #FEFDFD; padding: 10px 20px; border-radius: 5px;
-    font-family: Arial, sans-serif; font-size: 14px; z-index: 9999;
-    display: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-`;
-    notification.textContent = "Đã sao chép thành công!";
-    document.body.appendChild(notification);
 
+    function createGUINotification() {
+        const existNotification = document.getElementById("vnotification");
+        if (existNotification) return existNotification;
+
+        const notification = document.createElement("div");
+        notification.id = "vnotification";
+        notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; background-color: #FE5621;
+        color: #FEFDFD; padding: 10px 20px; border-radius: 5px;
+        font-family: Arial, sans-serif; font-size: 14px; z-index: 9999;
+        display: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    `;
+        notification.textContent = "Đã sao chép thành công!";
+        document.body.appendChild(notification);
+        return notification;
+    }
     function showNotification() {
-        notification.style.display = "block";
+        const notification = createGUINotification();
         setTimeout(() => (notification.style.display = "none"), NOTIFICATION_DURATION);
     }
     function convertPrice(stringPrice) {
@@ -168,12 +176,14 @@
         }
     };
 
-    setInterval(() => {
+    const start = () => {
         try {
             handleProduct();
             processPasteToSearch();
         } catch (e) {
             console.log(e);
         }
-    }, CHECK_INTERVAL);
+        setTimeout(start, CHECK_INTERVAL);
+    };
+    start();
 })();
