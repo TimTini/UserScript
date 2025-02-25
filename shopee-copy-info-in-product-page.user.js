@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Shopee Product Info Copier & Search Enhancer (In Product Page)
 // @namespace    http://tampermonkey.net/
-// @version      2025-02-25.02
+// @version      2025-02-25.03
 // @description  Enhances Shopee's search functionality by auto-submitting the search form on paste and allowing users to copy product links and prices with a click. Includes notifications upon successful copy and ensures efficient handling of dynamic elements.
 // @author       You
 // @match        https://vn.xiapibuy.com/*
@@ -36,6 +36,7 @@
     }
     function showNotification() {
         const notification = createGUINotification();
+        notification.style.display = "block";
         setTimeout(() => (notification.style.display = "none"), NOTIFICATION_DURATION);
     }
     function convertPrice(stringPrice) {

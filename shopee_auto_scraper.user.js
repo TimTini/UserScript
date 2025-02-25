@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Shopee Discount Extractor
 // @namespace    http://tampermonkey.net/
-// @version      2025-02-25.01
+// @version      2025-02-25.03
 // @description  Tự động quét và trích xuất thông tin giảm giá trên Shopee, sau đó gửi dữ liệu về trang gốc mở nó.
 // @author       You
 // @match        https://vn.xiapibuy.com/*
@@ -110,7 +110,7 @@
             return `${link}\tNA\tNA\tNon exist`;
         }
         if (!product) return false;
-        if (!product.getAttribute("data-event-set")) return false;
+        // if (!product.getAttribute("data-event-set")) return false;
         const priceElement = product.querySelector(PRICE_ELEMENT_SELECTOR);
         if (!link || !priceElement) return false;
         const price = priceElement.textContent.trim().replace("₫", "");
