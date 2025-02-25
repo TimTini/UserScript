@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Shopee Discount Extractor
 // @namespace    http://tampermonkey.net/
-// @version      2025-02-25
+// @version      2025-02-25.01
 // @description  Tự động quét và trích xuất thông tin giảm giá trên Shopee, sau đó gửi dữ liệu về trang gốc mở nó.
 // @author       You
 // @match        https://vn.xiapibuy.com/*
@@ -120,12 +120,15 @@
 
     // Main function to execute the logic
     const main = () => {
-        const content = GetPrice();
-        if (content) {
-            SendMessage(content);
-            console.log("Sent message to example.com:", content);
-        }
+        try {
+            const content = GetPrice();
+            if (content) {
+                SendMessage(content);
+                console.log("Sent message to example.com:", content);
+            }
+        } catch (err) {}
+        // Run the main function at the specified interval
+        setTimeout(main, CHECK_INTERVAL);
     };
-
-    setInterval(main, CHECK_INTERVAL); // Run the main function at the specified interval
+    main();
 })();
