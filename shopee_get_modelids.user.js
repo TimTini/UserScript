@@ -4,9 +4,8 @@
 // @version      2025-02-25.03
 // @description  Trích xuất model sản phẩm trên Shopee và gửi dữ liệu về giao diện điều khiển để xử lý.
 // @author       TimTini
-// @match        https://vn.xiapibuy.com/*?tide_model*
+// @match        https://vn.xiapibuy.com/*?*tide_model=*
 // @match        https://example.com/start_model
-// @match        https://www.w3schools.com/js/tryit.asp?filename=start_model
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=shopee.vn
 // @run-at       document-idle
 // @grant        unsafeWindow
@@ -21,7 +20,7 @@
     const MODEL_SELECTOR = ".flex.KIoPj6.W5LiQM"; // Selector for the model element
     const PROCUCT_NOTFOUND_SELECTOR = "[role='main'] > .product-not-exist__content > .product-not-exist__text";
     const SHOPEE_URLS_ORIGIN = ["https://shopee.vn", "https://vn.xiapibuy.com"];
-    const GUI_URLS = ["https://example.com/start_model", "https://www.w3schools.com/js/tryit.asp?filename=start_model"];
+    const GUI_URLS = ["https://example.com/start_model"];
 
     // Class to handle URL query parameters
     class VRL {
