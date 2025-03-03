@@ -1,40 +1,51 @@
 // ==UserScript==
 // @name         Beincom Auto-Clicker Like Button
 // @namespace    http://tampermonkey.net/
-// @version      0.3
-// @description  Automates a task on group.beincom.com by simulating clicks on elements with three SVG icons
+// @version      0.4
+// @description  Automates liking posts on group.beincom.com
 // @author       You
 // @match        https://group.beincom.com/*
+// @match        https://group.beincom.com/article/*
 // @icon         none
 // @grant        none
 // ==/UserScript==
 
-// Anonymous self-invoking function to encapsulate the code
 (function () {
     "use strict";
+    
     const TARGET_BUTTON_TEXT = ["THÍCH", "LIKE"];
-    // Set interval to run every 1 second
+
     setInterval(() => {
         try {
-            // Select all sections with div elements that have class 'flex w-full items-center'
+            // Lấy danh sách các section chứa nút "Like"
             const sections = document.querySelectorAll("section div.flex.w-full.items-center");
 
-            // Filter the sections to only include those with at least 3 buttons and a button with text "Thích"
-            const filteredSections = Array.from(sections).filter((section) => {
+            sections.forEach((section) => {
                 const buttons = section.querySelectorAll("button");
-                return buttons.length >= 3 && TARGET_BUTTON_TEXT.includes(buttons[0].textContent?.toUpperCase());
-            });
-
-            // Click the first button with text "Thích" in each filtered section
-            filteredSections.forEach((section) => {
-                const button = section.querySelector("button");
-                if (button) {
-                    button.click();
-                    console.log(`Clicked button with text "Thích" in section`);
+                
+                if (buttons.length >= 3) {
+                    const firstButton = buttons[0];
+                    
+                    if (firstButton.textContent && TARGET_BUTTON_TEXT.includes(firstButton.textContent.trim().toUpperCase())) {
+                        firstButton.click();
+                        console.log(`Clicked button with text "${firstButton.textContent.trim()}"`);
+                    }
                 }
             });
+
+            // Click tất cả button không có class "text-purple-50"
+            document.querySelectorAll(
+                "#main-container > div > section > div.rounded-lg.bg-white > div:nth-child(3) > section.p-4 > div > div.flex.w-full.flex-col > div.flex.h-8.items-center.p-1 > div.flex.items-center.space-x-2 > div > button:not(.text-purple-50)"
+            ).forEach((e) => {
+                const text = e.textContent?.trim().toUpperCase();
+                if (text && TARGET_BUTTON_TEXT.includes(text)) {
+                    e.click();
+                    console.log(`Clicked button with text "${text}"`);
+                }
+            });
+
         } catch (error) {
             console.error(`Error occurred: ${error.message}`);
         }
-    }, 1000);
+    }, 2000);
 })();
