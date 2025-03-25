@@ -1,0 +1,63 @@
+<div id="vform-overlay"
+    style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 10000; display: none">
+    <div
+        style="background: white; padding: 20px; border-radius: 10px; width: 300px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2)">
+        <h3>Tính Giáp</h3>
+        <div class="okui-input okui-input-sm" style="margin-top: 6px;">
+            <div class="okui-input-box">
+                <span class="okui-input-prefix">
+                    <div data-testid="okd-popup" class="okui-popup okui-popover okui-popover-sm">
+                        <div><span class="index_prefixSuffixBox__P7qVa index_hasPopover__pzsPS">Số tiền tạo bot</span>
+                        </div>
+                    </div>
+                </span>
+                <input inputmode="decimal" enable_thousands="true" autocomplete="off" step="1" max="9007199254740991"
+                    min="0" type="text" class="okui-input-input" autocapitalize="off" autocorrect="off" value=""
+                    id="soTienTaoBot" placeholder="0,1 - 50"
+                    style="padding-left: 8px; padding-right: 8px; text-align: end" />
+
+            </div>
+        </div>
+
+        <div class="okui-input okui-input-sm" style="margin-top: 6px;">
+            <div class="okui-input-box">
+                <span class="okui-input-prefix">
+                    <div data-testid="okd-popup" class="okui-popup okui-popover okui-popover-sm">
+                        <div><span class="index_prefixSuffixBox__P7qVa index_hasPopover__pzsPS">Số Margin</span>
+                        </div>
+                    </div>
+                </span>
+                <input inputmode="decimal" enable_thousands="true" autocomplete="off" step="1" max="9007199254740991"
+                    min="0" type="text" class="okui-input-input" autocapitalize="off" autocorrect="off" value=""
+                    id="soMargin" placeholder="0,1 - 50"
+                    style="padding-left: 8px; padding-right: 8px; text-align: end" />
+            </div>
+        </div>
+        <div class="okui-input okui-input-sm" style="margin-top: 6px;"">
+            <div class=" okui-input-box">
+            <span class="okui-input-prefix">
+                <div data-testid="okd-popup" class="okui-popup okui-popover okui-popover-sm">
+                    <div><span class="index_prefixSuffixBox__P7qVa index_hasPopover__pzsPS">Số Giáp</span>
+                    </div>
+                </div>
+            </span>
+            <input inputmode="decimal" enable_thousands="true" autocomplete="off" step="1" max="9007199254740991"
+                min="0" type="text" class="okui-input-input" autocapitalize="off" autocorrect="off" value="" id="soGiap"
+                placeholder="0,1 - 50" style="padding-left: 8px; padding-right: 8px; text-align: end" />
+            <div class="okui-input-suffix"><span
+                    class="index_prefixSuffixBox__P7qVa index_prefixSuffixBoxSuffix__gqm-z">%</span></div>
+        </div>
+    </div>
+    <div class="index_marginTop12__qLfxC">
+        <div class="index_liqPxBox__tcqVK">
+            <div class="index_row__zcU+s">
+                <div data-testid="okd-popup" class="okui-popup okui-popover okui-popover-sm ">
+                    <div class="index_popUpInner__yOWxY"><span
+                            class="index_rowLabel__ykY9b bot-core-order-hasPopover">Số tiền cần buff giáp:</span></div>
+                </div><span class="index_rowValue__uCFiM" id="soTienGiap">--</span>
+            </div>
+        </div>
+    </div>
+    <button id="closePopup" style="margin-top: 10px">Đóng</button>
+</div>
+</div>

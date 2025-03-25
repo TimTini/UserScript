@@ -5,6 +5,7 @@
 // @description  Trích xuất model sản phẩm trên Shopee và gửi dữ liệu về giao diện điều khiển để xử lý.
 // @author       TimTini
 // @match        https://vn.xiapibuy.com/*?*tide_model=*
+// @match        https://shopee.vn/*?*tide_model=*
 // @match        https://example.com/start_model
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=shopee.vn
 // @run-at       document-idle

@@ -5,6 +5,7 @@
 // @description  Tự động quét và trích xuất thông tin giảm giá trên Shopee, sau đó gửi dữ liệu về trang gốc mở nó.
 // @author       You
 // @match        https://vn.xiapibuy.com/*
+// @match        https://shopee.vn/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=shopee.vn
 // @grant        none
 // @run-at       document-idle

@@ -5,6 +5,7 @@
 // @description  Enhances Shopee's search functionality by auto-submitting the search form on paste and allowing users to copy product links and prices with a click. Includes notifications upon successful copy and ensures efficient handling of dynamic elements.
 // @author       You
 // @match        https://vn.xiapibuy.com/*
+// @match        https://shopee.vn/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=shopee.vn
 // @grant        none
 // @run-at       document-idle
