@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Shopee Model Extractor
 // @namespace    http://tampermonkey.net/
-// @version      2025-02-26
+// @version      2025-03-25
 // @description  Trích xuất model sản phẩm trên Shopee và gửi dữ liệu về giao diện điều khiển để xử lý.
 // @author       TimTini
 // @match        https://vn.xiapibuy.com/*?*tide_model=*

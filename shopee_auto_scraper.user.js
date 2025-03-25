@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Shopee Discount Extractor
 // @namespace    http://tampermonkey.net/
-// @version      2025-02-25.03
+// @version      2025-03-25
 // @description  Tự động quét và trích xuất thông tin giảm giá trên Shopee, sau đó gửi dữ liệu về trang gốc mở nó.
 // @author       You
 // @match        https://vn.xiapibuy.com/*
