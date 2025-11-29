@@ -14,6 +14,7 @@
     const DISPLAY_SKU = true;
     const COPY_BOTH_PRICE_SKU = false;
     const DISPLAY_SKU_TEXT = true;
+    const DISPLAY_SEARCH_SKU = true;
     const setCustumerStyle = () => {
         const styleElement = document.createElement("style");
         styleElement.innerHTML = `
@@ -76,6 +77,7 @@
     let overlayPrefs = loadOverlayPrefs();
     const normalizeText = (str) => (str || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toUpperCase();
     const escapeAttr = (str) => (str || "").replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    const isSearchPage = () => location.pathname.includes("/catalog/") || location.search.includes("q=");
     const PROP_SELECTOR =
         "#module_sku-select .sku-prop, #module_sku-select [class*='sku-prop'], [data-spm-anchor-id*='sku'] .sku-prop, [data-spm-anchor-id*='sku'] .sku-attribute, .sku-attribute, .sku-prop, [data-sku-prop-id], [data-prop-id], [data-pid]";
     const CANDIDATE_SELECTOR = [
@@ -624,6 +626,56 @@
         const selectedIndexes = props.map((prop, index) => getSelectedValueIndex(prop, index));
         updateOverlayState({ selectedValues: selectedIndexes });
     };
+    const displaySearchSKU = () => {
+        if (!DISPLAY_SEARCH_SKU || !isSearchPage()) {
+            return;
+        }
+        const cards = document.querySelectorAll(
+            [
+                "[data-tracking='product-card']",
+                "[data-qa-locator='product-item']",
+                "div[data-sku-simple]",
+                "li[data-sku-simple]",
+            ].join(", ")
+        );
+        cards.forEach((card) => {
+            if (card.dataset.skuBadgeAdded) {
+                return;
+            }
+            const sku =
+                card.getAttribute("data-sku-simple") ||
+                card.getAttribute("data-sku") ||
+                card.dataset.skuSimple ||
+                card.dataset.sku;
+            if (!sku) {
+                return;
+            }
+            const badge = document.createElement("div");
+            badge.textContent = sku;
+            badge.style.cursor = "pointer";
+            badge.style.color = "#0b5ed7";
+            badge.style.fontSize = "12px";
+            badge.style.fontWeight = "600";
+            badge.style.marginTop = "4px";
+            badge.style.userSelect = "none";
+            badge.addEventListener("click", () => {
+                navigator.clipboard
+                    .writeText(sku)
+                    .then(() => showCopyNotification("SKU copied: " + sku))
+                    .catch((err) => console.error("Failed to copy SKU:", err));
+            });
+
+            const targetElement =
+                card.querySelector(".RfADt") ||
+                card.querySelector(".Bm3ON") ||
+                card.querySelector("[data-qa-locator='product-item']") ||
+                card.firstElementChild;
+            if (targetElement) {
+                targetElement.insertAdjacentElement("afterend", badge);
+                card.dataset.skuBadgeAdded = "true";
+            }
+        });
+    };
     const displaySKU = () => {
         if (!isProductPage()) {
             return;
@@ -786,6 +838,7 @@
 
     // Set up an interval to check and add event listeners every 1 second
     setInterval(() => {
+        displaySearchSKU();
         if (!isProductPage()) {
             removeOverlay();
             return;
